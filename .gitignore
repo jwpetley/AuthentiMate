@@ -1,1 +1,3 @@
 *.csv
+training_model/fake_sample/*
+training_model/true_sample/*
