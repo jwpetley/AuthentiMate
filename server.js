@@ -28,7 +28,7 @@ app.post('/whatsapp',  async (req, res) => {
     const [result] = await client.analyzeSentiment({document: document});
     const sentiment = result.documentSentiment;
     
-    twiml.message('Text: ',+text);
+    twiml.message('Text: '+text);
     twiml.message('Sentiment score:'+sentiment.score);
     twiml.message('Sentiment magnitude: '+sentiment.magnitude);
 
