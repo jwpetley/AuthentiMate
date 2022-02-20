@@ -46,10 +46,6 @@ app.post('/whatsapp',  async (req, res) => {
         // console.log(`Text: ${text}`);
         // console.log(`Sentiment score: ${sentiment.score}`);
         // console.log(`Sentiment magnitude: ${sentiment.magnitude}`);
-  } else if {
-    twiml.message(
-      'No Body param match, Twilio sends this in the request to your server.'
-    );
   }
 
 
