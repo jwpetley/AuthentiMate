@@ -37,7 +37,7 @@ app.post('/whatsapp',  async (req, res) => {
 
   if (req.body.Body == 'BBC') {
     twiml.message('Hi!');
-  } else if (req.body.Body == 'Trump Is Trying') {
+  } else {//if (req.body.Body == 'Trump Is Trying') {
     //twiml.message(sentiment.score.toString());
     let sentiment = await quickstart(GOOGLE_APPLICATION_CREDENTIALS, req)
   
@@ -46,11 +46,7 @@ app.post('/whatsapp',  async (req, res) => {
         // console.log(`Text: ${text}`);
         // console.log(`Sentiment score: ${sentiment.score}`);
         // console.log(`Sentiment magnitude: ${sentiment.magnitude}`);
-  } else {
-    twiml.message(
-      'No Body param match, Twilio sends this in the request to your server.'
-    );
-  }
+  } 
 
   
   res.writeHead(200, {'Content-Type': 'text/xml'});
