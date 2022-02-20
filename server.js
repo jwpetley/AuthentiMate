@@ -3,7 +3,8 @@ const express = require('express');
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 const app = express();
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+const twilio = require('twilio');
 app.use(bodyParser.urlencoded({ extended: false }));
 //async
 app.post('/whatsapp',  async (req, res) => {
@@ -12,43 +13,60 @@ app.post('/whatsapp',  async (req, res) => {
   async function quickstart(GOOGLE_APPLICATION_CREDENTIALS, req){
     // Imports the Google Cloud client library
     const language = require('@google-cloud/language');
-  
+
     // Instantiates a client
     const client = new language.LanguageServiceClient();
-  
+
     // The text to analyze
     const text = req.body.Body;
-  
+
     const document = {
       content: text,
       type: 'PLAIN_TEXT',
     };
-  
+
     // Detects the sentiment of the text
     const [result] = await client.analyzeSentiment({document: document});
     const sentiment = result.documentSentiment;
+    console.log(sentiment.score)
     
+
+
+
+
     twiml.message('Text: '+text);
-    twiml.message('Sentiment score:'+sentiment.score);
-    twiml.message('Sentiment magnitude: '+sentiment.magnitude);
+    twiml.message('Sentiment score:'+sentiment.score.toFixed(2));
+    if (sentiment.score<-0.5) {
+      twiml.message('Probably True') ;
+    } else if (sentiment.score < 0.0) {
+      twiml.message('Maybe True');
+    } else if (sentiment.score < 0.5) {
+      twiml.message( 'Maybe False');
+    } else {
+      twiml.message('Probably False');
+    }
+    //twiml.message('Sentiment magnitude: '+sentiment.magnitude);
+
+   
+
 
     return sentiment
   }
 
   if (req.body.Body == 'BBC') {
     twiml.message('Hi!');
-  } else {//if (req.body.Body == 'Trump Is Trying') {
+  } else {
     //twiml.message(sentiment.score.toString());
     let sentiment = await quickstart(GOOGLE_APPLICATION_CREDENTIALS, req)
-  
+
     console.log(`Sentiment score: ${sentiment.score}`);
-    
+
         // console.log(`Text: ${text}`);
         // console.log(`Sentiment score: ${sentiment.score}`);
         // console.log(`Sentiment magnitude: ${sentiment.magnitude}`);
-  } 
+  }
 
-  
+
   res.writeHead(200, {'Content-Type': 'text/xml'});
 
   //response.redirect('https://demo.twilio.com/welcome/sms/');
