@@ -28,9 +28,25 @@ app.post('/whatsapp',  async (req, res) => {
     const [result] = await client.analyzeSentiment({document: document});
     const sentiment = result.documentSentiment;
 
+    if (sentiment.score<-0.5) {
+      let custom_message = "Probably False"
+    } else if (sentiment.score < 0.0) {
+      let custom_message = "Maybe False"
+    } else if (sentiment.score < 0.5) {
+      let custom_message = "Maybe True"
+    } else {
+      let custom_message = "Probably True"
+    }
+
+
+
+
     twiml.message('Text: ',+text);
     twiml.message('Sentiment score:'+sentiment.score);
-    twiml.message('Sentiment magnitude: '+sentiment.magnitude);
+    //twiml.message('Sentiment magnitude: '+sentiment.magnitude);
+
+    twiml.message("Overall Opinion: " + custom_message)
+
 
     return sentiment
   }
