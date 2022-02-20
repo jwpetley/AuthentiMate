@@ -12,22 +12,22 @@ app.post('/whatsapp',  async (req, res) => {
   async function quickstart(GOOGLE_APPLICATION_CREDENTIALS, req){
     // Imports the Google Cloud client library
     const language = require('@google-cloud/language');
-  
+
     // Instantiates a client
     const client = new language.LanguageServiceClient();
-  
+
     // The text to analyze
     const text = req.body.Body;
-  
+
     const document = {
       content: text,
       type: 'PLAIN_TEXT',
     };
-  
+
     // Detects the sentiment of the text
     const [result] = await client.analyzeSentiment({document: document});
     const sentiment = result.documentSentiment;
-    
+
     twiml.message('Text: ',+text);
     twiml.message('Sentiment score:'+sentiment.score);
     twiml.message('Sentiment magnitude: '+sentiment.magnitude);
@@ -37,22 +37,22 @@ app.post('/whatsapp',  async (req, res) => {
 
   if (req.body.Body == 'BBC') {
     twiml.message('Hi!');
-  } else if (req.body.Body == 'Trump Is Trying') {
+  } else {
     //twiml.message(sentiment.score.toString());
     let sentiment = await quickstart(GOOGLE_APPLICATION_CREDENTIALS, req)
-  
+
     console.log(`Sentiment score: ${sentiment.score}`);
-    
+
         // console.log(`Text: ${text}`);
         // console.log(`Sentiment score: ${sentiment.score}`);
         // console.log(`Sentiment magnitude: ${sentiment.magnitude}`);
-  } else {
+  } else if {
     twiml.message(
       'No Body param match, Twilio sends this in the request to your server.'
     );
   }
 
-  
+
   res.writeHead(200, {'Content-Type': 'text/xml'});
 
   //response.redirect('https://demo.twilio.com/welcome/sms/');
